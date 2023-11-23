@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatbot App - UNAD</title>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    #header {
+      background-color: #1c3d72;
+      background-image: linear-gradient(to right,#fff 50%,#1c3d72);
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #logo {
+      width: 200px;
+      height: auto;
+    }
+
+    .app-menu__item {
+      position: relative;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      padding: 5px 15px;
+      font-size: 1.08em;
+      border-left: 3px solid transparent;
+      -webkit-transition: border-left-color 0.3s ease, background-color 0.3s ease;
+      transition: border-left-color 0.3s ease, background-color 0.3s ease;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    #logout {
+      cursor: pointer;
+    }
+
+    #chat-container {
+      max-width: 600px;
+      margin: 20px auto;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    #chat-messages {
+      padding: 10px;
+      overflow-y: scroll;
+      max-height: 300px;
+    }
+
+    .message {
+      margin-bottom: 10px;
+      padding: 8px;
+      border-radius: 5px;
+    }
+
+    .user-message {
+      background-color: #10446e;
+      border: 2px solid #fff;
+      border-radius: 5px;
+      text-align:right;
+    }
+
+    .bot-message {
+      background-color: #00695C;
+      border: 2px solid #fff;
+      border-radius: 5px;
+    }
+
+    #input-container {
+      display: flex;
+      padding: 10px;
+      background-color: #fff;
+    }
+
+    #user-input {
+      flex-grow: 1;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    #send-button {
+      margin-left: 10px;
+      padding: 8px;
+      border: 1px solid #ea6518fa;
+      border-radius: 5px;
+      background-color: #ea6518fa;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    #footer {
+      height:50px;
+      line-height:50px;
+      background:#1c3d72;
+      color:white;
+      text-align:center;
+      position:absolute;
+      bottom:0;
+      left:0;
+      width:100%;      
+    }
+
+
+    .app-nav__item {      
+      color: #fff;
+      
+    } 
+   /*----- Componente barra lateral ----- */
+
+      
+   @import url(https://fonts.googleapis.com/css?family=Lato:300,400,400i,700);
+   @import url(https://fonts.googleapis.com/css?family=Niconne);
+   
+   :root,
+   [data-bs-theme=light] {     
+     --bs-white-rgb: 255, 255, 255;
+     --bs-black-rgb: 0, 0, 0;
+     --bs-font-sans-serif: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+     --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+     --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+     --bs-body-font-family: var(--bs-font-sans-serif);
+     --bs-body-font-size: 0.875rem;
+     --bs-body-font-weight: 400;
+     --bs-body-line-height: 1.5;
+     --bs-body-color: #212529;
+     --bs-body-color-rgb: 33, 37, 41;
+     --bs-body-bg: #FFF;
+   } 
+   
+      
+   body {
+     margin: 0;
+     font-family: var(--bs-body-font-family);
+     font-size: var(--bs-body-font-size);
+     font-weight: var(--bs-body-font-weight);
+     line-height: var(--bs-body-line-height);
+     color: var(--bs-body-color);
+     text-align: var(--bs-body-text-align);
+     background-color: var(--bs-body-bg);
+     -webkit-text-size-adjust: 100%;
+     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+   }
+   
+    
+   .list-unstyled, .treeview-menu, .app-menu, .app-nav {
+     padding-left: 0;
+     list-style: none;
+   }
+   
+
+   
+   /* Lineas chat */
+   .p-0 {
+     padding: 0 !important;
+   }
+   
+   .p-1 {
+     padding: 0.25rem !important;
+   }
+   
+   .p-2 {
+     padding: 0.5rem !important;
+   }
+   
+   .p-3 {
+     padding: 1rem !important;
+   }
+   
+   .p-4 {
+     padding: 1.5rem !important;
+   }
+   
+   .p-5 {
+     padding: 3rem !important;
+   }
+   
+   
+   .text-white {
+     --bs-text-opacity: 1;
+     color: rgba(var(--bs-white-rgb), var(--bs-text-opacity)) !important;
+   }
+      
+    
+   /* redondear imagen avatar */
+   .rounded-circle, .app-sidebar__user-avatar {
+     border-radius: 50% !important;
+   }
+   
+      /* Barra de navegación */
+   
+   
+   .app-sidebar {
+     position: fixed;
+     top: 60px;
+     bottom: 50px;
+     left: 0;
+     padding-top: 70px;
+     width: 230px;
+     overflow: auto;
+     z-index: 10;
+     background-color: #222d32;
+     -webkit-box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.2);
+             box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.2);
+     -webkit-transition: left 0.3s ease, width 0.3s ease;
+     transition: left 0.3s ease, width 0.3s ease;
+   }
+   .app-sidebar::-webkit-scrollbar {
+     width: 6px;
+   }
+   .app-sidebar::-webkit-scrollbar-thumb {
+     background: rgba(0, 0, 0, 0.2);
+   }
+   @media print {
+     .app-sidebar {
+       display: none;
+     }
+   }
+   
+   
+   
+   .app-sidebar__user {
+     display: -webkit-box;
+     display: -ms-flexbox;
+     display: flex;
+     -webkit-box-align: center;
+         -ms-flex-align: center;
+             align-items: center;
+     padding: 10px;
+     margin-bottom: 20px;
+     color: #fff;
+   }
+   
+   .app-sidebar__user-avatar {
+     -webkit-box-flex: 0;
+         -ms-flex: 0 0 auto;
+             flex: 0 0 auto;
+     margin-right: 15px;
+     max-width: 45px;
+     height: auto;
+   }
+   
+   .app-sidebar__user-name {
+     font-size: 17px;
+     line-height: 1.3;
+   }
+   
+   .app-sidebar__user-name,
+   .app-sidebar__user-designation {
+     white-space: nowrap;
+     overflow: hidden;
+     text-overflow: ellipsis;
+     margin-bottom: 0;
+   }
+   
+   .app-menu {
+     margin-bottom: 0;
+     padding-bottom: 40px;
+   }
+   
+   .app-menu__item {
+     position: relative;
+     display: -webkit-box;
+     display: -ms-flexbox;
+     display: flex;
+     -webkit-box-align: center;
+         -ms-flex-align: center;
+             align-items: center;
+     padding: 12px 15px;
+     font-size: 1.08em;
+     border-left: 3px solid transparent;
+     -webkit-transition: border-left-color 0.3s ease, background-color 0.3s ease;
+     transition: border-left-color 0.3s ease, background-color 0.3s ease;
+     text-decoration: none;
+     color: #fff;
+   }
+   .app-menu__item.active, .app-menu__item:hover, .app-menu__item:focus {
+     background: #0d1214;
+     border-left-color: #00695C;
+     text-decoration: none;
+     color: #fff;
+   }
+   
+   .app-menu__icon {
+     -webkit-box-flex: 0;
+         -ms-flex: 0 0 auto;
+             flex: 0 0 auto;
+     width: 25px;
+   }
+   
+   .app-menu__label {
+     white-space: nowrap;
+     -webkit-box-flex: 1;
+         -ms-flex: 1 1 auto;
+             flex: 1 1 auto;
+   }
+   
+   
+  </style>
+</head>
+<body>
+  <div id="header">
+    <img id="logo" src="https://www.unad.edu.co//images/footer/logo-unad-acreditacion-min.png" alt="Logo UNAD">
+    <div>
+      <li class="dropdown"><a class="app-nav__item" href="inicio.html" data-bs-toggle="dropdown" aria-label="Open Profile Menu"><i class="bi bi-person fs-4"></i></a>    
+      </li>
+    </div>
+  </div>
+  <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+    <aside class="app-sidebar">
+      <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User Image">
+        <div>
+          <p class="app-sidebar__user-name">Victor Rodríguez</p>
+          <p class="app-sidebar__user-designation">Frontend Developer</p>
+        </div>
+      </div>
+      <ul class="app-menu">
+        <li><a class="app-menu__item" href="#"><i class="app-menu__icon bi bi-ui-checks"></i><span class="app-menu__label">Historial Chat</span></a></li>
+        <li><a class="app-menu__item active" href="#" ><i class="app-menu__icon bi bi-laptop"></i><span class="app-menu__label">Chat</span><i></i></a>  
+      </ul>
+    </aside>
+
+  <div id="chat-container">
+    <div id="chat-messages"></div>
+    <div id="input-container">
+      <input type="text" id="user-input" placeholder="Escribe un mensaje...">
+      <button id="send-button" onclick="sendMessage()">Enviar  <i class="bi bi-send fs-5"></i></button>
+    </div>
+  </div>
+
+  <div id="footer">
+    Prototipo realizado por: Victor Manuel Rodríguez y Maria Fernanda Ríos
+  </div>
+
+  <script>
+    const chatMessages = document.getElementById('chat-messages');
+    const userInput = document.getElementById('user-input');
+
+  function sendMessage() {
+    const userQuestion = userInput.value;
+
+    if (userQuestion.trim() !== '') {
+      appendMessage('Usuario', userQuestion, 'user-message', 'text-white');
+
+      // Simulación de respuesta del chatbot
+      simulateChatbotResponse(userQuestion);
+
+      userInput.value = '';
+    }
+  }
+
+  function simulateChatbotResponse(userQuestion) {
+    setTimeout(() => {
+      const botResponse = getBotResponse(userQuestion);
+      appendMessage('Chatbot', botResponse, 'bot-message', 'text-white');
+    }, 600);
+  }
+
+  function getBotResponse(userQuestion) {
+    // Lógica para obtener respuestas del chatbot según la pregunta del usuario
+    
+    if (userQuestion.toLowerCase().includes('hola')) {
+      return '¡Hola! Soy un chatbot creado como prototipo funcional por estudiantes de la UNAD. ¿tienes alguna discapacidad? (indica Si o No)';
+    } else if (userQuestion.toLowerCase().includes('si')) {
+      return 'nos contactaremos contigo para facilitar tu acceso, tu bienestar es nuestra prioridad';
+    } else if (userQuestion.toLowerCase().includes('no')) {
+      return '¿En que puedo ayudarte hoy?';
+    } else if (userQuestion.toLowerCase().includes('que carreras tienen disponible?')) {
+      return 'Claro, mira en este enlace encontraras los programas tecnológicos y profesionales que manejamos https://estudios.unad.edu.co/carreras.';
+    } else if (userQuestion.toLowerCase().includes('tienen programas de postgrado?')) {
+      return 'si, contamos con especializaciones y maestrías acá podrás encontrar mas información https://estudios.unad.edu.co/carreras';
+    } else if (userQuestion.toLowerCase().includes('que costos tiene el semestre?')) {
+      return 'Para primer periodo académico son 15 créditos académicos para un programa profesional tiene un valor de $ 1.845.000 para un programa de tecnología con la misma cantidad de créditos tiene un valor de $ 1.650.000';  
+    } else if (userQuestion.toLowerCase().includes('como me puedo matricular?')) {
+      return 'Desde la misma página de la UNAD puedes realizar el proceso o te puedes acercar a la UNAD mas cercana para realizar el proceso directamente en la oficina de registro y control';  
+    } else if (userQuestion.toLowerCase().includes('cuales son los periodos academicos que manejan para el 2024?')) {
+      return 'Manejamos 5 periodos académicos, 4 de 16 semanas y 1 de 8 perteneciente a un intersemestral, el primer periodo llamado 16-01 se desarrolla del 8 de febrero al 12 de junio, el segundo periodo académico llamado 16-02 se desarrolla del 8 de abril al 11 de agosto, el periodo de 8 semanas intersemestral llamado 8-03 se desarrolla del 13 de junio al 17 de agosto, el cuarto periodo 16-04 se desarrolla del 21 de agosto al 24 de diciembre, y por ultimo el periodo 16-05 se desarrolla del 8 de octubre al 17 de febrero del 2025';  
+    } else if (userQuestion.toLowerCase().includes('como puedo comunicarme con mi cead?')) {
+      return 'La forma mas eficaz es por medio de correo electrónico, si sabes cual es la UNAD que te quede mas cerca usaras ryc.ciudad@unad.edu.co, si no conoces puedes enviar la solicitud directamente a ryc.bogota@unad.edu.co  ';  
+    } else if (userQuestion.toLowerCase().includes('gracias')) {
+      return 'con todo gusto, espero haber resuelto tus dudas, quisiera saber que tal fue mi utilidad en tu proceso de comunicación, por favor llena la siguiente encuesta para que mis desarrolladores puedan mejorar y adaptar mis funcionalidades https://forms.gle/dTZdNogfF4ycfvbW6';  
+    } else {
+      return 'Lo siento, no tengo información sobre eso en este momento.';
+    }
+  }
+
+  function appendMessage(sender, message, bgClass, textClass) {
+    const messageDiv = document.createElement('div');
+    messageDiv.textContent = `${sender}: ${message}`;
+    messageDiv.classList.add('p-2', 'mb-2', bgClass, textClass);
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+    function logout() {
+      // Implementa la lógica de cierre de sesión aquí
+      alert("Cierre de sesión exitoso");
+    }
+  </script>
+</body>
+</html>
